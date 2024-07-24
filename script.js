@@ -38,7 +38,6 @@ function toggleMenus() { /* Open and close menu */
     menuItemsList.classList.toggle("menuhide");
 }
 
-// Create game
 var blockSize = 25;
 var rows = 20;
 var cols = 20;
@@ -66,7 +65,12 @@ window.onload = function () {
 
     spawnPrata();
     document.addEventListener("keyup", direction);
-    // update();
+
+    document.getElementById("button1").addEventListener("click", () => changeDirection("up"));
+    document.getElementById("button2").addEventListener("click", () => changeDirection("down"));
+    document.getElementById("button3").addEventListener("click", () => changeDirection("left"));
+    document.getElementById("button4").addEventListener("click", () => changeDirection("right"));
+
     setInterval(update, 1000 / 10);
 }
 
@@ -107,7 +111,7 @@ function update() {
     }
 
     // Check if game is over
-    if (snakeX < 0 || snakeX > rows * blockSize || snakeY < 0 || snakeY > rows * blockSize) {
+    if (snakeX < 0 || snakeX >= rows * blockSize || snakeY < 0 || snakeY >= rows * blockSize) {
         gameOver = true;
         alert("Game Over");
     }
@@ -131,6 +135,22 @@ function direction(e) {
         velocityX = -1;
         velocityY = 0;
     } else if (e.code == "KeyD" && velocityX != -1) {
+        velocityX = 1;
+        velocityY = 0;
+    }
+}
+
+function changeDirection(direction) {
+    if (direction == "up" && velocityY != 1) {
+        velocityX = 0;
+        velocityY = -1;
+    } else if (direction == "down" && velocityY != -1) {
+        velocityX = 0;
+        velocityY = 1;
+    } else if (direction == "left" && velocityX != 1) {
+        velocityX = -1;
+        velocityY = 0;
+    } else if (direction == "right" && velocityX != -1) {
         velocityX = 1;
         velocityY = 0;
     }
