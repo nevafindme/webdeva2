@@ -1,25 +1,25 @@
-//target all elements to save to constants
+// Target all elements to save to constants
 const page1btn = document.querySelector("#page1btn");
 const page2btn = document.querySelector("#page2btn");
 const page3btn = document.querySelector("#page3btn");
 var allpages = document.querySelectorAll(".page");
-//select all subtopic pages
+// Select all subtopic pages
 console.log(allpages);
 hideall();
-function hideall() { //function to hide all pages
-    for (let onepage of allpages) { //go through all subtopic pages
-        onepage.style.display = "none"; //hide it
+function hideall() { // Function to hide all pages
+    for (let onepage of allpages) { // Go through all subtopic pages
+        onepage.style.display = "none"; // Hide it
     }
 }
-function show(pgno) { //function to show selected page no
+function show(pgno) { // Function to show selected page no
     hideall();
-    //select the page based on the parameter passed in
+    // Select the page based on the parameter passed in
     let onepage = document.querySelector("#page" + pgno);
-    //show the page
+    // Show the page
     onepage.style.display = "block";
 }
-/*Listen for clicks on the buttons, assign anonymous
-eventhandler functions to call show function*/
+/* Listen for clicks on the buttons, assign anonymous
+eventhandler functions to call show function */
 page1btn.addEventListener("click", function () {
     show(1);
 });
@@ -29,15 +29,14 @@ page2btn.addEventListener("click", function () {
 page3btn.addEventListener("click", function () {
     show(3);
 });
-/*JS for hamMenu */
+/* JS for hamMenu */
 const hamBtn = document.querySelector("#hamIcon");
 hamBtn.addEventListener("click", toggleMenus);
 const menuItemsList = document.querySelector("nav ul");
 
-function toggleMenus() { /*open and close menu*/
+function toggleMenus() { /* Open and close menu */
     menuItemsList.classList.toggle("menuhide");
 }
-
 
 // Create game
 var blockSize = 25;
@@ -56,6 +55,9 @@ var velocityY = 0;
 
 var gameOver = false;
 
+const img = new Image();
+img.src = 'image/fish.jpeg'; // Provide the path to your image
+
 window.onload = function () {
     board = document.getElementById("board");
     board.height = rows * blockSize;
@@ -69,87 +71,73 @@ window.onload = function () {
 }
 
 function update() {
-if(gameOver){
-    return;
-}
-
+    if (gameOver) {
+        return;
+    }
 
     context.fillStyle = "black";
     context.fillRect(0, 0, board.width, board.height);
 
-
     // Prata 
-
-    context.fillStyle = "beige";
+    const pattern = context.createPattern(img, 'repeat'); // 'repeat' can be 'repeat', 'repeat-x', 'repeat-y', or 'no-repeat'
+    
+    // Set the pattern as the fill style
+    context.fillStyle = pattern;
     context.fillRect(prataX, prataY, blockSize, blockSize);
 
-
-
-// check for collision between prata and snake
-
-if(snakeX == prataX && snakeY == prataY){
-    snakeBody.push([prataX,prataY])
-    spawnPrata();
-}
-for(let i = snakeBody.length-1; i > 0; i--){
- snakeBody[i] = snakeBody[i-1];
-}
-if(snakeBody.length){
-    snakeBody[0] = [snakeX,snakeY];
-}
-    // make snake
-
+    // Check for collision between prata and snake
+    if (snakeX == prataX && snakeY == prataY) {
+        snakeBody.push([prataX, prataY]);
+        spawnPrata();
+    }
+    for (let i = snakeBody.length - 1; i > 0; i--) {
+        snakeBody[i] = snakeBody[i - 1];
+    }
+    if (snakeBody.length) {
+        snakeBody[0] = [snakeX, snakeY];
+    }
+    // Make snake
     context.fillStyle = "brown";
     snakeX += velocityX * blockSize;
     snakeY += velocityY * blockSize;
     context.fillRect(snakeX, snakeY, blockSize, blockSize);
     
-    for(let i = 0; i<snakeBody.length;i++){
-        context.fillRect(snakeBody[i][0],snakeBody[i][1],blockSize,blockSize);
+    for (let i = 0; i < snakeBody.length; i++) {
+        context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
     }
 
-//  Check if game is over
-
-if(snakeX < 0 || snakeX > rows * blockSize || snakeY < 0 || snakeY > rows * blockSize){
-    gameOver = true;
-    alert ("Game Over");
-}
-
-for(let i = 0; i <snakeBody.length;i++){
-    if(snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]){
+    // Check if game is over
+    if (snakeX < 0 || snakeX > rows * blockSize || snakeY < 0 || snakeY > rows * blockSize) {
         gameOver = true;
         alert("Game Over");
     }
+
+    for (let i = 0; i < snakeBody.length; i++) {
+        if (snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]) {
+            gameOver = true;
+            alert("Game Over");
+        }
+    }
 }
-
-}
-
-
-
-
 
 function direction(e) {
     if (e.code == "KeyW" && velocityY != 1) {
         velocityX = 0;
         velocityY = -1;
-    }
-    else if (e.code == "KeyS" && velocityY != -1) {
+    } else if (e.code == "KeyS" && velocityY != -1) {
         velocityX = 0;
         velocityY = 1;
-    }
-    else if (e.code == "KeyA" && velocityX != 1 ) {
+    } else if (e.code == "KeyA" && velocityX != 1) {
         velocityX = -1;
         velocityY = 0;
-    }
-    else if (e.code == "KeyD" && velocityX != -1) {
+    } else if (e.code == "KeyD" && velocityX != -1) {
         velocityX = 1;
         velocityY = 0;
     }
-
 }
+
 // Spawn prata
 function spawnPrata() {
     prataX = Math.floor(Math.random() * cols) * blockSize;
     prataY = Math.floor(Math.random() * rows) * blockSize;
 }
-
