@@ -1,0 +1,155 @@
+//target all elements to save to constants
+const page1btn = document.querySelector("#page1btn");
+const page2btn = document.querySelector("#page2btn");
+const page3btn = document.querySelector("#page3btn");
+var allpages = document.querySelectorAll(".page");
+//select all subtopic pages
+console.log(allpages);
+hideall();
+function hideall() { //function to hide all pages
+    for (let onepage of allpages) { //go through all subtopic pages
+        onepage.style.display = "none"; //hide it
+    }
+}
+function show(pgno) { //function to show selected page no
+    hideall();
+    //select the page based on the parameter passed in
+    let onepage = document.querySelector("#page" + pgno);
+    //show the page
+    onepage.style.display = "block";
+}
+/*Listen for clicks on the buttons, assign anonymous
+eventhandler functions to call show function*/
+page1btn.addEventListener("click", function () {
+    show(1);
+});
+page2btn.addEventListener("click", function () {
+    show(2);
+});
+page3btn.addEventListener("click", function () {
+    show(3);
+});
+/*JS for hamMenu */
+const hamBtn = document.querySelector("#hamIcon");
+hamBtn.addEventListener("click", toggleMenus);
+const menuItemsList = document.querySelector("nav ul");
+
+function toggleMenus() { /*open and close menu*/
+    menuItemsList.classList.toggle("menuhide");
+}
+
+
+// Create game
+var blockSize = 25;
+var rows = 20;
+var cols = 20;
+var board;
+var context;
+
+var snakeX = blockSize * 5;
+var snakeY = blockSize * 5;
+
+var snakeBody = [];
+
+var velocityX = 0;
+var velocityY = 0;
+
+var gameOver = false;
+
+window.onload = function () {
+    board = document.getElementById("board");
+    board.height = rows * blockSize;
+    board.width = cols * blockSize;
+    context = board.getContext("2d");
+
+    spawnPrata();
+    document.addEventListener("keyup", direction);
+    // update();
+    setInterval(update, 1000 / 10);
+}
+
+function update() {
+if(gameOver){
+    return;
+}
+
+
+    context.fillStyle = "black";
+    context.fillRect(0, 0, board.width, board.height);
+
+
+    // Prata 
+
+    context.fillStyle = "beige";
+    context.fillRect(prataX, prataY, blockSize, blockSize);
+
+
+
+// check for collision between prata and snake
+
+if(snakeX == prataX && snakeY == prataY){
+    snakeBody.push([prataX,prataY])
+    spawnPrata();
+}
+for(let i = snakeBody.length-1; i > 0; i--){
+ snakeBody[i] = snakeBody[i-1];
+}
+if(snakeBody.length){
+    snakeBody[0] = [snakeX,snakeY];
+}
+    // make snake
+
+    context.fillStyle = "brown";
+    snakeX += velocityX * blockSize;
+    snakeY += velocityY * blockSize;
+    context.fillRect(snakeX, snakeY, blockSize, blockSize);
+    
+    for(let i = 0; i<snakeBody.length;i++){
+        context.fillRect(snakeBody[i][0],snakeBody[i][1],blockSize,blockSize);
+    }
+
+//  Check if game is over
+
+if(snakeX < 0 || snakeX > rows * blockSize || snakeY < 0 || snakeY > rows * blockSize){
+    gameOver = true;
+    alert ("Game Over");
+}
+
+for(let i = 0; i <snakeBody.length;i++){
+    if(snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]){
+        gameOver = true;
+        alert("Game Over");
+    }
+}
+
+}
+
+
+
+
+
+function direction(e) {
+    if (e.code == "KeyW" && velocityY != 1) {
+        velocityX = 0;
+        velocityY = -1;
+    }
+    else if (e.code == "KeyS" && velocityY != -1) {
+        velocityX = 0;
+        velocityY = 1;
+    }
+    else if (e.code == "KeyA" && velocityX != 1 ) {
+        velocityX = -1;
+        velocityY = 0;
+    }
+    else if (e.code == "KeyD" && velocityX != -1) {
+        velocityX = 1;
+        velocityY = 0;
+    }
+
+}
+// Spawn prata
+function spawnPrata() {
+    prataX = Math.floor(Math.random() * cols) * blockSize;
+    prataY = Math.floor(Math.random() * rows) * blockSize;
+}
+
