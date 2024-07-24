@@ -183,3 +183,12 @@ height: 50px;
     }
 
 }
+
+/* responsive Game */
+@media screen and (max-width:800px) {
+    #board{
+        display: flex;
+        width: fit-content;
+        justify-content: center;
+    }
+}

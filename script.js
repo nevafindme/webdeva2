@@ -44,18 +44,20 @@ var cols = 20;
 var board;
 var context;
 
-var snakeX = blockSize * 5;
-var snakeY = blockSize * 5;
-
-var snakeBody = [];
-
-var velocityX = 0;
-var velocityY = 0;
-
-var gameOver = false;
+var snakeX, snakeY, snakeBody, velocityX, velocityY, gameOver;
 
 const img = new Image();
 img.src = 'image/fish.jpeg'; // Provide the path to your image
+
+function initializeGame() {
+    snakeX = blockSize * 5;
+    snakeY = blockSize * 5;
+    snakeBody = [];
+    velocityX = 0;
+    velocityY = 0;
+    gameOver = false;
+    spawnPrata();
+}
 
 window.onload = function () {
     board = document.getElementById("board");
@@ -63,7 +65,6 @@ window.onload = function () {
     board.width = cols * blockSize;
     context = board.getContext("2d");
 
-    spawnPrata();
     document.addEventListener("keyup", direction);
 
     document.getElementById("button1").addEventListener("click", () => changeDirection("up"));
@@ -77,7 +78,12 @@ window.onload = function () {
     document.getElementById("button3").addEventListener("touchstart", () => changeDirection("left"));
     document.getElementById("button4").addEventListener("touchstart", () => changeDirection("right"));
 
+    // Add reset button event listener
+    document.getElementById("resetButton").addEventListener("click", resetGame);
+
     setInterval(update, 1000 / 10);
+
+    initializeGame();
 }
 
 function update() {
@@ -160,6 +166,11 @@ function changeDirection(direction) {
         velocityX = 1;
         velocityY = 0;
     }
+}
+
+function resetGame() {
+    initializeGame();
+    alert("Game Reset");
 }
 
 // Spawn prata
