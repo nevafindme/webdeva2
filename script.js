@@ -71,6 +71,12 @@ window.onload = function () {
     document.getElementById("button3").addEventListener("click", () => changeDirection("left"));
     document.getElementById("button4").addEventListener("click", () => changeDirection("right"));
 
+    // Add touch event listeners for mobile
+    document.getElementById("button1").addEventListener("touchstart", () => changeDirection("up"));
+    document.getElementById("button2").addEventListener("touchstart", () => changeDirection("down"));
+    document.getElementById("button3").addEventListener("touchstart", () => changeDirection("left"));
+    document.getElementById("button4").addEventListener("touchstart", () => changeDirection("right"));
+
     setInterval(update, 1000 / 10);
 }
 
