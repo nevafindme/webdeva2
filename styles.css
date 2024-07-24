@@ -164,6 +164,12 @@ nav ul li {
     /* to add and remove classes in menu*/
     display: block;
 }
+#game{
+    display: flex;
+    position:relative;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
 #page3 button{
 
